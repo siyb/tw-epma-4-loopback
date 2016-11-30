@@ -78,7 +78,7 @@ sudo npm install -g strongloop
 * we will be creating a small API in class
     * must be able to store Products and Orders
     * relation between Order and Product
-* PostgreSQL as database
+* in memory (PostgreSQL as) database
 
 ## Setting up a Project - 2 - Initialize the project
 
