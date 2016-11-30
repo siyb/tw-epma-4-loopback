@@ -32,14 +32,21 @@
 * wizard based
 * generally well documented
 
-## About Loopback - 2 - Client SDKs
+## About Loopback - 2 - General cont.
+
+* creates a standardized environment
+    * linter rules
+    * style guide
+    * security checks
+
+## About Loopback - 3 - Client SDKs
 
 * Features several SDKs that provide API bindings for clients:
     * iOS
     * Android
     * Angular.js
 
-## About Loopback - 3 - Juggler
+## About Loopback - 4 - Juggler
 
 * supports multiple, different data source, not only different databases, using the same accessing API
 * MySql, PostgreSQL, Oracle, IBM*, MSSql, ...
@@ -131,7 +138,7 @@ Connector-specific configuration:
 ? Install loopback-connector-postgresql@^2.4 Yes
 ```
 
-## Setting up a Project - 4 - Creating models
+## Setting up a Project - 6 - Creating models
 
 ```bash
 ~/example % slc loopback:model Product                                                                                                        :(
@@ -152,7 +159,7 @@ Enter an empty property name when done.
 
 ```
 
-## Setting up a Project - 5 - Creating models
+## Setting up a Project - 7 - Creating models
 
 ```bash
 Let\'s add another Product property.
@@ -164,7 +171,7 @@ Enter an empty property name when done.
 ? Default value[leave blank for none]: 
 ```
 
-## Setting up a Project - 5 - Creating models cont.
+## Setting up a Project - 8 - Creating models cont.
 
 ```bash
 ~/example % slc loopback:model Order  
@@ -184,7 +191,7 @@ Enter an empty property name when done.
 ? Default value[leave blank for none]: 
 ```
 
-## Setting up a Project - 6 - Creating models cont.
+## Setting up a Project - 9 - Creating models cont.
 
 ```bash
 Enter an empty property name when done.
@@ -197,7 +204,7 @@ Enter an empty property name when done.
 Let\'s add another Product1 property.
 ```
 
-## Setting up a Project - 6 - Explained: Creating models
+## Setting up a Project - 10 - Explained: Creating models
 
 * creates model.js and model.json in common/models
 * creates model / datasource mapping in server/model-config.json
@@ -208,7 +215,7 @@ Let\'s add another Product1 property.
     * your custom code
 * model inheritance is supported!
 
-## Setting up a Project - 7 - Setting relations
+## Setting up a Project - 11 - Setting relations
 
 ```bash
 ~/example % slc loopback:relation
@@ -219,7 +226,7 @@ Let\'s add another Product1 property.
 ? Optionally enter a custom foreign key: 
 ```
 
-## Setting up a Project - 8 - Explained: Setting relations
+## Setting up a Project - 12 - Explained: Setting relations
 
 * creates relation in common/models/order.json
 
@@ -233,7 +240,7 @@ Let\'s add another Product1 property.
 }
 ```
 
-## Setting up a Project - 9 - Simple ACL
+## Setting up a Project - 13 - Simple ACL
 
 ```bash
 example % slc loopback:acl
@@ -244,7 +251,7 @@ example % slc loopback:acl
 ? Select the permission to apply Explicitly deny access
 ```
 
-## Setting up a Project - 10 - Simple ACL
+## Setting up a Project - 14 - Simple ACL
 
 ```bash
 example % slc loopback:acl
@@ -255,7 +262,7 @@ example % slc loopback:acl
 ? Select the permission to apply Explicitly grant access
 ```
 
-## Setting up a Project - 11 - Explained: Simple ACL
+## Setting up a Project - 15 - Explained: Simple ACL
 
 * adds the following ACLs to all 
 
@@ -276,12 +283,12 @@ example % slc loopback:acl
 ]
 ```
 
-## Setting up a Project - 11 - Explained: Simple ACL cont.
+## Setting up a Project - 16 - Explained: Simple ACL cont.
 
 * disallows access to all routes to users that are not logged in
 * allows access to all routes to users that are logged in
 
-## Setting up a Project - 12 - Run & Check out API
+## Setting up a Project - 17 - Run & Check out API
 
 ```bash
 node .
@@ -492,7 +499,7 @@ module.exports = (options) => {
 };
 ```
 
-## Custom Code - 6 - Express Middleware cont.
+## Custom Code - 76 - Express Middleware cont.
 
 * server/middleware.json
 
@@ -507,7 +514,7 @@ module.exports = (options) => {
   ....
 ```
 
-## Custom Code - 7 - Component
+## Custom Code - 8 - Component
 
 * Use case examples:
     * global logger provider
@@ -525,7 +532,7 @@ module.exports = function (app, options) {
 }
 ```
 
-## Custom Code - 7 - Component cont.
+## Custom Code - 9 - Component cont.
 
 * server/component-config.json
 
@@ -538,7 +545,7 @@ module.exports = function (app, options) {
   ...
 ```
 
-## Custom Code - 8 - Boot Script
+## Custom Code - 10 - Boot Script
 
 * Use case examples:
   * register roles
@@ -553,9 +560,6 @@ module.exports = function (app) {
    // register role here
 }
 ```
-
-
-
 
 # Any Questions?
 
