@@ -14,8 +14,9 @@
 * About Loopback
 * Getting started
 * Setting up a project
-  * Documentation
+    * Documentation
 * Configuration
+* ACL
 * Custom Code
 
 # About Loopback
@@ -23,9 +24,9 @@
 ## About Loopback - 1 - General
 
 * loopback is an API generator
-  * for simple, unauthorized APIs, all you need to create an API is the console
+    * for simple, unauthorized APIs, all you need to create an API is the console
 * strongloop, the company behind loopback was bought by IBM
-  * used in IBM's "API Connect"
+    * used in IBM's "API Connect"
 * written in Node.js (almost ECMA 6 compliant)
 * extensible via hooks
 * wizard based
@@ -33,9 +34,9 @@
 ## About Loopback - 2 - Client SDKs
 
 * Features several SDKs that provide API bindings for clients:
-  * iOS
-  * Android
-  * Angular.js
+    * iOS
+    * Android
+    * Angular.js
 
 ## About Loopback - 3 - Juggler
 
@@ -48,7 +49,7 @@
 ## Getting Started - 1 - Installation: Node.js
 
 * Install Node.js from: https://nodejs.org/en/download/
-  * Use an LTS (Long Time Support) version!
+    * Use an LTS (Long Time Support) version!
 * ... if you are using a prominent linux distribution, https://github.com/nodesource/distributions might be helpful to get the newest packages!
 
 ## Getting Started - 2 - Installation: loopback
@@ -67,8 +68,8 @@ sudo npm install -g strongloop
 ## Setting up a Project - 1 - Requirements
 
 * we will be creating a small API in class
-  * must be able to store Products and Orders
-  * relation between Order and Product
+    * must be able to store Products and Orders
+    * relation between Order and Product
 * PostgreSQL as database
 
 ## Setting up a Project - 2 - Initialize the project
@@ -182,15 +183,29 @@ Enter an empty property name when done.
 ? Default value[leave blank for none]: 
 ```
 
-## Setting up a Project - 6 - Creating models
+## Setting up a Project - 6 - Creating models cont.
+
+```bash
+Enter an empty property name when done.
+? Property name: done
+   invoke   loopback:property
+? Property type: boolean
+? Required? No
+? Default value[leave blank for none]: false
+
+Let\'s add another Product1 property.
+```
+
+## Setting up a Project - 6 - Explained: Creating models
 
 * creates model.js and model.json in common/models
 * creates model / datasource mapping in server/model-config.json
 * common - used for client (Angular.js) and server alike, you can make the models server only as well
 * Model.json
-  * model definition
+    * model definition
 * Model.js
-  * your custom code
+    * your custom code
+* model inheritance is supported!
 
 ## Setting up a Project - 7 - Setting relations
 
@@ -224,8 +239,8 @@ example % slc loopback:acl
 ? Select the model to apply the ACL entry to: (all existing models)
 ? Select the ACL scope: All methods and properties
 ? Select the access type: All (match all types)
-? Select the role Any authenticated user
-? Select the permission to apply Explicitly grant access
+? Select the role Any unauthenticated user
+? Select the permission to apply Explicitly deny access
 ```
 
 ## Setting up a Project - 10 - Simple ACL
@@ -235,8 +250,8 @@ example % slc loopback:acl
 ? Select the model to apply the ACL entry to: (all existing models)
 ? Select the ACL scope: All methods and properties
 ? Select the access type: All (match all types)
-? Select the role Any unauthenticated user
-? Select the permission to apply Explicitly deny access
+? Select the role Any authenticated user
+? Select the permission to apply Explicitly grant access
 ```
 
 ## Setting up a Project - 11 - Explained: Simple ACL
@@ -257,19 +272,152 @@ example % slc loopback:acl
     "principalId": "$unauthenticated",
     "permission": "DENY"
   }
-],
+]
 ```
+
+## Setting up a Project - 11 - Explained: Simple ACL cont.
+
+* disallows access to all routes to users that are not logged in
+* allows access to all routes to users that are logged in
+
+## Setting up a Project - 12 - Run & Check out API
+
+```bash
+node .
+Web server listening at: http://0.0.0.0:3000
+Browse your REST API at http://0.0.0.0:3000/explorer
+```
+
+* Visit: http://0.0.0.0:3000/explorer
+* Swagger definitions: http://0.0.0.0:3000/explorer/swagger.json
+* API: http://0.0.0.0:3000/api/$model
 
 # Configuration
 
+## Configuration - 1 - General: Environment
+
+* When it comes to CI / CD, usually, you want to support different environments
+    * test - for running test cases
+    * local - local developer machine
+    * development - development instance
+    * staging - staging instance, preview for stakeholder (e.g. customer)
+    * production - production environment, end user environment
+* loopback uses NODE_ENV to set these environments
+
+## Configuration - 2 - Loopback Config Files
+
+* **server/component-config.json**
+    * used to configure components (such as the explorer)
+* **server/datasources.json**
+    * contains the configuration of all data sources
+* **server/middleware.json**
+    * contains the configuration of all middlewares
+* **server/model-config.json**
+    * contains all models that should be known to the system, controls API exposure
+* **server/config.json**
+    * general configuration
+
+## Configuration - 3 - Environment specific Configuration
+
+* You can supply different configs for different environments by following the naming convention: $config.$env.json
+* e.g
+    * middleware.development.conf
+    * datasources.test.conf
+    * model-config.production.conf
+* Use cases:
+    * use in memory database for testing (datasource.test.conf or model-config.test.conf)
+    * Enable / Disable features (middlewares / components / routes) according to ENV
+      * e.g. API explorer should not run in production
+
+
+# ACL
+
+## ACL - 1 - Static / Dynamic Roles
+
+* loopback supports ACLs (check out the earlier example)
+* loopback has the notion of static and dynamic roles:
+    * static roles are not bound to other entities or the state of the user
+      * e.g. administrator
+    * dynamic roles are either bound to other entities or are state specific, you may need to implement custom handlers
+      * $owner
+      * $authenticated
+      * $unauthenticated
+      * $everyone
+* names of dynamic roles are preceeded by a '$'
+* you can create custom static and dynamic roles
+
+## ACL - 2 - Access Rules
+
+* loopback supports the following "permissions" (order == precedence):
+    * DENY - disallow access
+    * ALLOW - allow access
+    * DEFAULT - depends
+
+## ACL - 3 - Access Types
+
+* loopback understands the following "accessType"s:
+    * READ
+    * WRITE
+    * EXECUTE
+
+## ACL - 4 - Access Property
+
+* loopback allows you restrict access to individual properties
+    * e.g. find
+    * wildcards (*) are supported
+* precedence: type (e.g. READ), method (e.g. find), wildcard
+
+## ACL - 5 - Principals
+
+* a principal is the "thing" that enables a user to access a resource
+    * we are only dealing with ROLE in this presentation
+* every pricipal needs to be accompanied by a principalId, i.e. the name of the ROLE:
+    * $owner, $authenticated, etc
+
+## ACL - 6 - Example
+
+```json
+{
+  "model": "Order",
+  "property": "find",
+  "accessType": 'EXECUTE',
+  "principalType": "ROLE",
+  "principalId": "$authenticated",
+  "permission": "ALLOW"
+}
+```
+
 # Custom Code
 
-- supports model inheritance
-- different datasources, e.g. for testing
-- acls
+## Custom Code - 1 - Introduction
+
+* loopback allows customization of logic
+* you may add additional logic / routes to models
+* you may create express type middlewares
+* you may create components
+* you may create boot scripts that run every time the application starts up
+    * useful for roles
+
+## Custom Code - 2 - Logic / Routes
+
+* common/models/order.js
+```javascript
+module.export = function (Order) {
+  Order.setDone = (id) => {
+    return Order
+      .findById(id)
+      .then(order => {
+        if (!order)
+          return Promise.reject(new Error('No order'));
+        if (order.done)
+          return Promise.resolve();
+        order.done = true;
+	return order.save();
+      });
+  };
 
 
-
+```
 
 # Any Questions?
 
