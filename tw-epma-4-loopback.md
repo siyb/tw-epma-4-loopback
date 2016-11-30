@@ -30,6 +30,7 @@
 * written in Node.js (almost ECMA 6 compliant)
 * extensible via hooks
 * wizard based
+* generally well documented
 
 ## About Loopback - 2 - Client SDKs
 
@@ -393,17 +394,24 @@ Browse your REST API at http://0.0.0.0:3000/explorer
 
 * loopback allows customization of logic
 * you may add additional logic / routes to models
+    * common/models/model.js
+* you may add hooks to models
+    * commons/models/model.js
 * you may create express type middlewares
+    * server/middleware/mymiddleware.js
 * you may create components
+    * server/components/mycomponent.js
 * you may create boot scripts that run every time the application starts up
+    * server/boot/mybootscript.js
     * useful for roles
 
 ## Custom Code - 2 - Logic / Routes
 
 * common/models/order.js
+
 ```javascript
-module.export = function (Order) {
-  Order.setDone = (id) => {
+module.exports = function (Order) {
+  Order.setDone = (id, cb) => {
     return Order
       .findById(id)
       .then(order => {
@@ -412,12 +420,142 @@ module.export = function (Order) {
         if (order.done)
           return Promise.resolve();
         order.done = true;
-	return order.save();
-      });
-  };
-
-
+        return order.save();
+      // pseudocode :)
+      }).then((order) => { cb(order) })
+      }).catch(cb);
 ```
+
+## Custom Code - 3 - Logic / Routes cont.
+
+```javascript
+  ...
+  Order.remoteMethod('markDone', {
+    isStatic: true,
+    description: 'Mark order done.',
+    notes: 'Noop if order is done.',
+    http: {
+      path: '/markDone/:id',
+      verb: 'put',
+      status: 200,
+      errorStatus: 400
+    },
+    accepts: {arg: 'id', type: 'number', required: true},
+    returns: [
+      {type: 'object', root: true}]
+    });
+  };
+}
+```
+
+## Custom Code - 4 - Model Hooks
+
+* do not use "model hooks", use "operation hooks" instead
+  * access, before save, after save, before delete, after delete, loaded, persisted
+
+## Custom Code - 5 - Example: Model Hooks
+
+* common/models/order.js
+
+```javascript
+module.exports = function (Order) {
+  MyModel.observe('before save', (ctx, next) => {
+    // do something
+    
+    // do not forget to call next(),
+    // will call next handler
+    next();
+  });
+}
+```
+
+## Custom Code - 6 - Express Middleware
+
+* See: [Express Middleware](http://expressjs.com/en/guide/using-middleware.html)
+* Use case examples:
+    * attach current user
+    * log requests
+    * parse stuff, etc
+* server/middleware/mymiddleware.js
+
+```javascript
+// this is a function factory
+// options comes from config
+module.exports = (options) => {
+  return (reqest, response, next) => {
+    // do something, e.g. get current user
+    // and attach her/him to request
+    
+    // call next!
+    next();
+  };
+};
+```
+
+## Custom Code - 6 - Express Middleware cont.
+
+* server/middleware.json
+
+```json
+  ...
+  "routes:before": {
+    "./middleware/mymiddleware": {
+      "option1": 1,
+      "option2": 2
+    },
+  },
+  ....
+```
+
+## Custom Code - 7 - Component
+
+* Use case examples:
+    * global logger provider
+    * message bus
+    * basically: basic service code
+* server/components/mycomponent.js
+
+```javascript
+// the app is the current app, options are
+// provided in config file
+module.exports = function (app, options) {
+   const Order = app.models.Order;
+   
+   // do something with an order
+}
+```
+
+## Custom Code - 7 - Component cont.
+
+* server/component-config.json
+
+```json
+  ...
+  "./components/mycomponent": {
+      "option1": 1,
+      "option2": 2
+  }
+  ...
+```
+
+## Custom Code - 8 - Boot Script
+
+* Use case examples:
+  * register roles
+  * enable server flags (e.g. authentication)
+  * basically: all programmatic setup tasks
+* server/boot/mybootscript.js
+
+```javascript
+module.exports = function (app) {
+   const Role = app.models.Role;
+   
+   // register role here
+}
+```
+
+
+
 
 # Any Questions?
 
