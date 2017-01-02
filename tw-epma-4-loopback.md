@@ -78,11 +78,11 @@ sudo npm install -g strongloop
 * we will be creating a small API in class
     * must be able to store Products and Orders
     * relation between Order and Product
-* in memory (PostgreSQL as) database
+* in memory / PostgreSQL as database
 
 ## Setting up a Project - 2 - Initialize the project
 
-```bash
+```
 ~/example $ slc loopback
      _-----_     
     |       |     --------------------------
@@ -104,7 +104,7 @@ sudo npm install -g strongloop
 
 ## Setting up a Project - 3 - Create a datasource
 
-```bash
+```
 ~/example % slc loopback:datasource    
 ? Enter the data-source name: db
 ? Select the connector for db: In-memory db 
@@ -121,9 +121,22 @@ Connector-specific configuration:
 * creates a datasource in server/datasources.json
 * can from now on be referenced by using its descriptive name 'db'
 
+## Setting up a Project - 4 - Explained: Create a datasource cont.
+
+```json
+{
+  "db": {
+    "name": "db",
+    "localStorage": "",
+    "file": "./db.sqlite",
+    "connector": "memory"
+  }
+}
+```
+
 ## Setting up a Project - 5 - Create a datasource adv.
 
-```bash
+```
 ~/example $ slc loopback:datasource
 ? Enter the data-source name: postgres
 ? Select the connector for postgres: PostgreSQL 
@@ -140,15 +153,15 @@ Connector-specific configuration:
 
 ## Setting up a Project - 6 - Creating models
 
-```bash
+```
 ~/example % slc loopback:model Product                                                                                                        :(
 ? Enter the model name: Product
 ? Select the data-source to attach Product to: db (memory)
-? Select model\'s base class PersistedModel
+? Select model's base class PersistedModel
 ? Expose Product via the REST API? Yes
 ? Custom plural form (used to build REST URL): 
 ? Common model or server only? common
-Let\'s add some Product properties now.
+Let's add some Product properties now.
 
 Enter an empty property name when done.
 ? Property name: name
@@ -161,8 +174,8 @@ Enter an empty property name when done.
 
 ## Setting up a Project - 7 - Creating models
 
-```bash
-Let\'s add another Product property.
+```
+Let's add another Product property.
 Enter an empty property name when done.
 ? Property name: price
    invoke   loopback:property
@@ -173,15 +186,15 @@ Enter an empty property name when done.
 
 ## Setting up a Project - 8 - Creating models cont.
 
-```bash
+```
 ~/example % slc loopback:model Order  
 ? Enter the model name: Order
 ? Select the data-source to attach Order to: db (memory)
-? Select model\'s base class PersistedModel
+? Select model's base class PersistedModel
 ? Expose Order via the REST API? Yes
 ? Custom plural form (used to build REST URL): 
 ? Common model or server only? common
-Let\'s add some Order properties now.
+Let's add some Order properties now.
 
 Enter an empty property name when done.
 ? Property name: name
@@ -193,7 +206,7 @@ Enter an empty property name when done.
 
 ## Setting up a Project - 9 - Creating models cont.
 
-```bash
+```
 Enter an empty property name when done.
 ? Property name: done
    invoke   loopback:property
@@ -201,7 +214,7 @@ Enter an empty property name when done.
 ? Required? No
 ? Default value[leave blank for none]: false
 
-Let\'s add another Product1 property.
+Let's add another Product property.
 ```
 
 ## Setting up a Project - 10 - Explained: Creating models
@@ -215,9 +228,28 @@ Let\'s add another Product1 property.
     * your custom code
 * model inheritance is supported!
 
-## Setting up a Project - 11 - Setting relations
+## Setting up a Project - 11 - Explained: Creating models cont.
 
-```bash
+```json
+{
+  "name": "Order",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": { "validateUpsert": true },
+  "properties": {
+    "name": { "type": "string", "required": true},
+    "done": {"type": "boolean"}
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": {}
+}
+```
+
+## Setting up a Project - 12 - Setting relations
+
+```
 ~/example % slc loopback:relation
 ? Select the model to create the relationship from: Order
 ? Relation type: has and belongs to many
@@ -226,7 +258,7 @@ Let\'s add another Product1 property.
 ? Optionally enter a custom foreign key: 
 ```
 
-## Setting up a Project - 12 - Explained: Setting relations
+## Setting up a Project - 13 - Explained: Setting relations
 
 * creates relation in common/models/order.json
 
@@ -240,9 +272,9 @@ Let\'s add another Product1 property.
 }
 ```
 
-## Setting up a Project - 13 - Simple ACL
+## Setting up a Project - 14 - Simple ACL
 
-```bash
+```
 example % slc loopback:acl
 ? Select the model to apply the ACL entry to: (all existing models)
 ? Select the ACL scope: All methods and properties
@@ -251,9 +283,9 @@ example % slc loopback:acl
 ? Select the permission to apply Explicitly deny access
 ```
 
-## Setting up a Project - 14 - Simple ACL
+## Setting up a Project - 15 - Simple ACL
 
-```bash
+```
 example % slc loopback:acl
 ? Select the model to apply the ACL entry to: (all existing models)
 ? Select the ACL scope: All methods and properties
@@ -290,7 +322,7 @@ example % slc loopback:acl
 
 ## Setting up a Project - 17 - Run & Check out API
 
-```bash
+```
 node .
 Web server listening at: http://0.0.0.0:3000
 Browse your REST API at http://0.0.0.0:3000/explorer
