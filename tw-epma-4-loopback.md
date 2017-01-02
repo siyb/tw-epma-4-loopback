@@ -376,13 +376,12 @@ Browse your REST API at http://0.0.0.0:3000/explorer
 
 * loopback supports ACLs (check out the earlier example)
 * loopback has the notion of static and dynamic roles:
-    * static roles are not bound to other entities or the state of the user
-      * e.g. administrator
+    * static roles are not bound to other entities or the state of the user: e.g. administrator
     * dynamic roles are either bound to other entities or are state specific, you may need to implement custom handlers
-      * $owner
-      * $authenticated
-      * $unauthenticated
-      * $everyone
+        * $owner
+        * $authenticated
+        * $unauthenticated
+        * $everyone
 * names of dynamic roles are preceeded by a '$'
 * you can create custom static and dynamic roles
 
@@ -391,7 +390,7 @@ Browse your REST API at http://0.0.0.0:3000/explorer
 * loopback supports the following "permissions" (order == precedence):
     * DENY - disallow access
     * ALLOW - allow access
-    * DEFAULT - depends
+    * DEFAULT - depends on default setting for the app
 
 ## ACL - 3 - Access Types
 
