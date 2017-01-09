@@ -265,7 +265,7 @@ Let's add another Product property.
 ```json
 "relations": {
   "product": {
-    "type": "belongsTo",
+    "type": "hasAndBelongsTo",
     "model": "Product",
     "foreignKey": ""
   }
@@ -419,7 +419,7 @@ Browse your REST API at http://0.0.0.0:3000/explorer
 {
   "model": "Order",
   "property": "find",
-  "accessType": 'EXECUTE',
+  "accessType": "EXECUTE",
   "principalType": "ROLE",
   "principalId": "$authenticated",
   "permission": "ALLOW"
@@ -449,7 +449,7 @@ Browse your REST API at http://0.0.0.0:3000/explorer
 
 ```javascript
 module.exports = function (Order) {
-  Order.setDone = (id, cb) => {
+  Order.markDone = (id, cb) => {
     return Order
       .findById(id)
       .then(order => {
