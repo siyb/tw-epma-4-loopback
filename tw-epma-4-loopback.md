@@ -395,9 +395,9 @@ Browse your REST API at http://0.0.0.0:3000/explorer
 ## ACL - 3 - Access Types
 
 * loopback understands the following "accessType"s:
-    * READ
-    * WRITE
-    * EXECUTE
+    * READ - exists, findById, findOne, count
+    * WRITE - create, updateAttributes, upsert, destroyById
+    * EXECUTE - other methods, e.g. custom methods without specific type
 
 ## ACL - 4 - Access Property
 
@@ -405,6 +405,7 @@ Browse your REST API at http://0.0.0.0:3000/explorer
     * e.g. find
     * wildcards (*) are supported
 * precedence: type (e.g. READ), method (e.g. find), wildcard
+* -> i.e.: More specific rule takes precedence over more general rule
 
 ## ACL - 5 - Principals
 
@@ -530,7 +531,7 @@ module.exports = (options) => {
 };
 ```
 
-## Custom Code - 76 - Express Middleware cont.
+## Custom Code - 7 - Express Middleware cont.
 
 * server/middleware.json
 
