@@ -48,7 +48,7 @@
 
 ## About Loopback - 4 - Juggler
 
-* supports multiple, different data source, not only different databases, using the same accessing API
+* supports multiple, different data sources, not only different databases, using the same accessing API
 * MySql, PostgreSQL, Oracle, IBM*, MSSql, ...
 * ... and even other APIS!
 
@@ -65,7 +65,7 @@
 * run the following command in a terminal
 
 ```bash
-sudo npm install -g strongloop
+sudo npm install -g loopback-cli
 ```
 
 * npm is the "Node Package Manager"
@@ -83,7 +83,7 @@ sudo npm install -g strongloop
 ## Setting up a Project - 2 - Initialize the project
 
 ```
-~/example $ slc loopback
+~/example $ lb
      _-----_     
     |       |     --------------------------
     |--(o)--|    |  Let's create a LoopBack |
@@ -105,7 +105,7 @@ sudo npm install -g strongloop
 ## Setting up a Project - 3 - Create a datasource
 
 ```
-~/example % slc loopback:datasource    
+~/example % lb datasource    
 ? Enter the data-source name: db
 ? Select the connector for db: In-memory db 
 (supported by StrongLoop)
@@ -137,7 +137,7 @@ Connector-specific configuration:
 ## Setting up a Project - 5 - Create a datasource adv.
 
 ```
-~/example $ slc loopback:datasource
+~/example $ lb datasource
 ? Enter the data-source name: postgres
 ? Select the connector for postgres: PostgreSQL 
 (supported by StrongLoop)
@@ -154,7 +154,7 @@ Connector-specific configuration:
 ## Setting up a Project - 6 - Creating models
 
 ```
-~/example % slc loopback:model Product                                                                                                        :(
+~/example % lb model Product                                                                                                        :(
 ? Enter the model name: Product
 ? Select the data-source to attach Product to: db (memory)
 ? Select model's base class PersistedModel
@@ -187,7 +187,7 @@ Enter an empty property name when done.
 ## Setting up a Project - 8 - Creating models cont.
 
 ```
-~/example % slc loopback:model Order  
+~/example % lb model Order  
 ? Enter the model name: Order
 ? Select the data-source to attach Order to: db (memory)
 ? Select model's base class PersistedModel
@@ -250,7 +250,7 @@ Let's add another Product property.
 ## Setting up a Project - 12 - Setting relations
 
 ```
-~/example % slc loopback:relation
+~/example % lb relation
 ? Select the model to create the relationship from: Order
 ? Relation type: has and belongs to many
 ? Choose a model to create a relationship with: Product
@@ -275,8 +275,9 @@ Let's add another Product property.
 ## Setting up a Project - 14 - Simple ACL
 
 ```
-example % slc loopback:acl
-? Select the model to apply the ACL entry to: (all existing models)
+example % lb acl
+? Select the model to apply the ACL entry to: 
+  (all existing models)
 ? Select the ACL scope: All methods and properties
 ? Select the access type: All (match all types)
 ? Select the role Any unauthenticated user
@@ -286,8 +287,9 @@ example % slc loopback:acl
 ## Setting up a Project - 15 - Simple ACL
 
 ```
-example % slc loopback:acl
-? Select the model to apply the ACL entry to: (all existing models)
+example % lb acl
+? Select the model to apply the ACL entry to: 
+  (all existing models)
 ? Select the ACL scope: All methods and properties
 ? Select the access type: All (match all types)
 ? Select the role Any authenticated user
